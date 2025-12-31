@@ -1,0 +1,1196 @@
+{
+	"info": {
+		"_postman_id": "375f6bb2-1a80-4699-927c-4e8a1eb4cea3",
+		"name": "FastFoodChallenge Fase 3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17515682",
+		"_collection_link": "https://restless-space-461454.postman.co/workspace/helix~186b3645-f64e-4201-b0d1-0a8b1794d41a/collection/17515682-375f6bb2-1a80-4699-927c-4e8a1eb4cea3?action=share&source=collection_link&creator=17515682"
+	},
+	"item": [
+		{
+			"name": "Configuração ambiente",
+			"item": [
+				{
+					"name": "-3# [Lambda] - Cria database e preenche valores base",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{lambdaApiGateway}}/lambda_sql_setup_function",
+							"host": [
+								"{{lambdaApiGateway}}"
+							],
+							"path": [
+								"lambda_sql_setup_function"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "-2# Reset environment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Setup/ResetEnvironment",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Setup",
+								"ResetEnvironment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "-1# Configuração webhook",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\"{{apiUrl}}\"",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/Webhook/Pagamento/SetWebhookBaseUrl",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Webhook",
+								"Pagamento",
+								"SetWebhookBaseUrl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1# Setup colaboradores",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Setup/SetupColaboradoresMock",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Setup",
+								"SetupColaboradoresMock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2# Login administrador mock",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Stores the token from the response in an environment or global variable\r",
+									"var responseBody = pm.response.json();\r",
+									"var token = responseBody.token;\r",
+									"pm.collectionVariables.set(\"tokenAdministrador\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Setup/LoginAdministradorMock",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Setup",
+								"LoginAdministradorMock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3# Login cozinheiro mock",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Stores the token from the response in an environment or global variable\r",
+									"var responseBody = pm.response.json();\r",
+									"var token = responseBody.token;\r",
+									"pm.collectionVariables.set(\"tokenCozinheiro\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Setup/LoginCozinheiroMock",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Setup",
+								"LoginCozinheiroMock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4# Login atendente mock",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Stores the token from the response in an environment or global variable\r",
+									"var responseBody = pm.response.json();\r",
+									"var token = responseBody.token;\r",
+									"pm.collectionVariables.set(\"tokenAtendente\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Setup/LoginAtendenteMock",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Setup",
+								"LoginAtendenteMock"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Autenticação",
+			"item": [
+				{
+					"name": "5# Cadastro Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cpf\": \"12345678910\",\r\n  \"nome\": \"Carlos\",\r\n  \"email\": \"carlos_henrique97@outlook.com.br\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/Cliente/InsertNew",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Cliente",
+								"InsertNew"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6# [Lambda] Login cliente - CPF",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Get the token from a plain text response\r",
+									"var token = pm.response.text();\r",
+									"\r",
+									"// Store it in a collection variable\r",
+									"pm.collectionVariables.set(\"tokenCliente\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{lambdaApiGateway}}/lambda_login_cliente?cpf=12345678910",
+							"host": [
+								"{{lambdaApiGateway}}"
+							],
+							"path": [
+								"lambda_login_cliente"
+							],
+							"query": [
+								{
+									"key": "cpf",
+									"value": "12345678910"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6# Login cliente - Email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Stores the token from the response in an environment or global variable\r",
+									"var responseBody = pm.response.json();\r",
+									"var token = responseBody.token;\r",
+									"pm.collectionVariables.set(\"tokenCliente\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/Autenticacao/LoginClienteEmail?email=carlos_henrique97@outlook.com.br",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Autenticacao",
+								"LoginClienteEmail"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "carlos_henrique97@outlook.com.br"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6# Login cliente - Anônimo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Stores the token from the response in an environment or global variable\r",
+									"var responseBody = pm.response.json();\r",
+									"var token = responseBody.token;\r",
+									"pm.collectionVariables.set(\"tokenCliente\", token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/Autenticacao/LoginClienteAnonimo",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Autenticacao",
+								"LoginClienteAnonimo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedido",
+			"item": [
+				{
+					"name": "7# Ver produtos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Produto/GetAll?categoria=acompanhamento",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Produto",
+								"GetAll"
+							],
+							"query": [
+								{
+									"key": "categoria",
+									"value": "acompanhamento",
+									"description": "Ingredientes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8# Iniciar pedido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let idPedido = parseInt(pm.response.text().trim(), 10);\r",
+									"pm.collectionVariables.set(\"idPedido\", idPedido);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/Pedido/IniciaPedido",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Pedido",
+								"IniciaPedido"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9# Checkout pedido (s/ alteração)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"idLanche\": 1,\r\n    \"idAcompanhamento\": 3,\r\n    \"idBebida\": 2,\r\n    \"idSobremesa\": 7\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/Pedido/CheckoutPedido?idPedido={{idPedido}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Pedido",
+								"CheckoutPedido"
+							],
+							"query": [
+								{
+									"key": "idPedido",
+									"value": "{{idPedido}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9# Checkout pedido (c/ alteração)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"idLanche\": 1,\r\n    \"idAcompanhamento\": 3,\r\n    \"idBebida\": 2,\r\n    \"idSobremesa\": 7,\r\n    \"alteracoesIngrediente\": [\r\n      {\r\n        \"idIngrediente\": 4,\r\n        \"quantidade\": 2\r\n      },\r\n      {\r\n        \"idIngrediente\": 5,\r\n        \"quantidade\": 3\r\n      }\r\n\r\n    ]\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/Pedido/CheckoutPedido?idPedido={{idPedido}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Pedido",
+								"CheckoutPedido"
+							],
+							"query": [
+								{
+									"key": "idPedido",
+									"value": "{{idPedido}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pagamento",
+			"item": [
+				{
+					"name": "10# Check status pagamento pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Pedido/CheckStatusPagamentoPedido?idPedido={{idPedido}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Pedido",
+								"CheckStatusPagamentoPedido"
+							],
+							"query": [
+								{
+									"key": "idPedido",
+									"value": "{{idPedido}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Webhook# Informa pagamento pedido aprovado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Pedido/InformaPagamentoPedidoAprovado?idPedido={{idPedido}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Pedido",
+								"InformaPagamentoPedidoAprovado"
+							],
+							"query": [
+								{
+									"key": "idPedido",
+									"value": "{{idPedido}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Webhook# Informa pagamento pedido negado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Pedido/InformaPagamentoPedidoNegado?idPedido={{idPedido}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Pedido",
+								"InformaPagamentoPedidoNegado"
+							],
+							"query": [
+								{
+									"key": "idPedido",
+									"value": "{{idPedido}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Preparação do Pedido",
+			"item": [
+				{
+					"name": "11# Inicia preparo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCozinheiro}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Pedido/IniciaPreparo?idPedido={{idPedido}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Pedido",
+								"IniciaPreparo"
+							],
+							"query": [
+								{
+									"key": "idPedido",
+									"value": "{{idPedido}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12# Finaliza preparo",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCozinheiro}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Pedido/FinalizaPreparo?idPedido={{idPedido}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Pedido",
+								"FinalizaPreparo"
+							],
+							"query": [
+								{
+									"key": "idPedido",
+									"value": "{{idPedido}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Entrega e finalização do Pedido",
+			"item": [
+				{
+					"name": "13# Finaliza pedido",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAtendente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Pedido/FinalizaPedido?idPedido={{idPedido}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Pedido",
+								"FinalizaPedido"
+							],
+							"query": [
+								{
+									"key": "idPedido",
+									"value": "{{idPedido}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Interfaces",
+			"item": [
+				{
+					"name": "Totem Autoatendimento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCliente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Painel/TotemAutoatendimento",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Painel",
+								"TotemAutoatendimento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Painel Cozinha",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenCozinheiro}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Painel/Cozinha",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Painel",
+								"Cozinha"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Painel Atendente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAtendente}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Painel/Atendente",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Painel",
+								"Atendente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Painel Administrador",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdministrador}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Painel/Administrador",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Painel",
+								"Administrador"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista de Pedidos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{tokenAdministrador}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Pedido/GetAll",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Pedido",
+								"GetAll"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Webhook test",
+			"item": [
+				{
+					"name": "https://892313c37915.ngrok-free.app/Webhook/Pagamento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "ep_30ncfKdVOnnkTvNyJ5Lo7p4EPTl",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"querida\": \"éeehhh querida\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://b5c26a4b63e4.ngrok-free.app/Webhook/Pagamento?origem=MercadoPago&identificador=1",
+							"protocol": "https",
+							"host": [
+								"b5c26a4b63e4",
+								"ngrok-free",
+								"app"
+							],
+							"path": [
+								"Webhook",
+								"Pagamento"
+							],
+							"query": [
+								{
+									"key": "origem",
+									"value": "MercadoPago"
+								},
+								{
+									"key": "identificador",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lambda test via API Gateway",
+			"item": [
+				{
+					"name": "Configuração do SQL no RDS",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://658vnay25h.execute-api.sa-east-1.amazonaws.com/dev/lambda_sql_setup_function",
+							"protocol": "https",
+							"host": [
+								"658vnay25h",
+								"execute-api",
+								"sa-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"lambda_sql_setup_function"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login de cliente via CPF",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "https://658vnay25h.execute-api.sa-east-1.amazonaws.com/dev/lambda_login_cliente?cpf=12345678910",
+							"protocol": "https",
+							"host": [
+								"658vnay25h",
+								"execute-api",
+								"sa-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"lambda_login_cliente"
+							],
+							"query": [
+								{
+									"key": "cpf",
+									"value": "12345678910"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "apiUrl",
+			"value": "https://localhost:5086",
+			"disabled": true
+		},
+		{
+			"key": "apiUrl",
+			"value": "https://a268f0677cdef48fc8e6d5decbd78905-276093186.sa-east-1.elb.amazonaws.com"
+		},
+		{
+			"key": "lambdaApiGateway",
+			"value": "https://658vnay25h.execute-api.sa-east-1.amazonaws.com/dev"
+		},
+		{
+			"key": "tokenCliente",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJDYXJsb3MiLCJlbWFpbCI6ImNhcmxvc19oZW5yaXF1ZTk3QG91dGxvb2suY29tLmJyIiwicm9sZSI6IjMiLCJuYmYiOjE3NDg5MjgyNjEsImV4cCI6MTc0ODkzMTg2MSwiaWF0IjoxNzQ4OTI4MjYxfQ.4cUAwLVev8vkKfVRspy_KzjRXKYBP0cdqUS_tpX1nxE"
+		},
+		{
+			"key": "idPedido",
+			"value": ""
+		},
+		{
+			"key": "tokenAdministrador",
+			"value": ""
+		},
+		{
+			"key": "tokenCozinheiro",
+			"value": ""
+		},
+		{
+			"key": "tokenAtendente",
+			"value": ""
+		}
+	]
+}

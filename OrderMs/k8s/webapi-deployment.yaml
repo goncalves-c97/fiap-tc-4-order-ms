@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapi-deployment
+  labels:
+    app: webapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapi
+  template:
+    metadata:
+      labels:
+        app: webapi
+    spec:
+      initContainers:
+      - name: wait-for-sqlserver
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nc -z sqlserver 1433; do echo waiting for sqlserver; sleep 2; done;']
+      containers:
+      - name: webapi
+        image: goncalvesc97/fastfood-clean-arch-challenge:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "200m"
+            memory: "256Mi"
+        env:
+        - name: ASPNETCORE_URLS
+          value: "http://+:5000"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+
+        # Configuração do ambiente de banco de dados 
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: fastfood-secret
+              key: DEFAULT_CONNECTION_STRING
+        - name: ConnectionStrings__MasterConnection
+          valueFrom:
+            secretKeyRef:
+              name: fastfood-secret
+              key: MASTER_CONNECTION_STRING
+
+        # Configuração da chave de autenticação da API
+        - name: ApiAuthentication__Token
+          valueFrom:
+            secretKeyRef:
+              name: fastfood-secret
+              key: API_AUTH_TOKEN
+
+        # Configuração do serviço de email
+        - name: EmailSettings__Mail
+          valueFrom:
+            configMapKeyRef:
+              name: fastfood-config
+              key: MAIL
+        - name: EmailSettings__DisplayName
+          valueFrom:
+            configMapKeyRef:
+              name: fastfood-config
+              key: DISPLAY_NAME
+        - name: EmailSettings__Host
+          valueFrom:
+            configMapKeyRef:
+              name: fastfood-config
+              key: HOST
+        - name: EmailSettings__Port
+          valueFrom:
+            configMapKeyRef:
+              name: fastfood-config
+              key: PORT
+        - name: EmailSettings__Password
+          valueFrom:
+            secretKeyRef:
+              name: fastfood-secret
+              key: EMAIL_PASSWORD
+
+        # Configuração do serviço de pagamento Mercado Pago
+        - name: PaymentSettings__Token
+          valueFrom:
+            secretKeyRef:
+              name: fastfood-secret
+              key: MERCADO_PAGO_ACCESS_TOKEN
+        - name: PaymentSettings__SponsorId
+          valueFrom:
+            configMapKeyRef:
+              name: fastfood-config
+              key: MERCADO_PAGO_SPONSOR_ID
+        - name: PaymentSettings__BaseUrl
+          valueFrom:
+            configMapKeyRef:
+              name: fastfood-config
+              key: MERCADO_PAGO_BASE_URL
+        - name: PaymentSettings__PaymentController
+          valueFrom:
+            configMapKeyRef:
+              name: fastfood-config
+              key: MERCADO_PAGO_PAGAMENTO_QRCODE_CONTROLLER
+        - name: PaymentSettings__UserId
+          valueFrom:
+            configMapKeyRef:
+              name: fastfood-config
+              key: MERCADO_PAGO_USER_ID
+        - name: PaymentSettings__ExternalPosId
+          valueFrom:
+            configMapKeyRef:
+              name: fastfood-config
+              key: MERCADO_PAGO_EXTERNAL_POS_ID
