@@ -2,7 +2,6 @@
 using Core.Interfaces;
 using Core.Settings;
 using Dapper;
-using Infra.Data.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +12,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Infra.Email;
 using Core.Dtos;
+using Infra.Data.MongoDb;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -118,17 +118,19 @@ builder.Services.AddScoped<IDbConnection>(provider =>
     // Keep existing initializer call for compatibility.
     DatabaseInitializer.EnsureDatabaseExists(rawConnectionString, databaseName);
 
-    SqlMapper.SetTypeMap(typeof(Pedido), new SnakeCaseTypeMapper<Pedido>());
-    SqlMapper.SetTypeMap(typeof(StatusPedido), new SnakeCaseTypeMapper<StatusPedido>());
+    //SqlMapper.SetTypeMap(typeof(Pedido), new SnakeCaseTypeMapper<Pedido>());
+    //SqlMapper.SetTypeMap(typeof(StatusPedido), new SnakeCaseTypeMapper<StatusPedido>());
 
-    var builder = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(rawConnectionString)
-    {
-        InitialCatalog = databaseName
-    };
+    //var builder = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(rawConnectionString)
+    //{
+    //    InitialCatalog = databaseName
+    //};
 
-    var finalConnectionString = builder.ToString();
+    //var finalConnectionString = builder.ToString();
 
-    return new SqlServerConnection(finalConnectionString);
+    //return new SqlServerConnection(finalConnectionString);
+
+    return new MongoDbConnection(rawConnectionString, databaseName);
 });
 
 builder.Configuration.AddEnvironmentVariables();

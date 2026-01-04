@@ -19,6 +19,7 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Infra.Data.SqlServer\Infra.Data.SqlServer.csproj" />
     <ProjectReference Include="..\Infra.Email\Infra.Email.csproj" />
+    <ProjectReference Include="..\Infra.MongoDb\Infra.Data.MongoDb.csproj" />
   </ItemGroup>
 
 </Project>

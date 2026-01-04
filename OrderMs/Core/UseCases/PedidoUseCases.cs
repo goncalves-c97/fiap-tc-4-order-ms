@@ -89,6 +89,10 @@ namespace Core.UseCases
 
             pedido.IdPagamento = idPagamento;
 
+            pedido.DataHoraConfirmacao = DateTime.Now;
+
+            pedido.IdStatusPedido = (int)StatusPedidoEnum.PagamentoPendente;
+
             await UpdatePedido(pedidoGateway, pedido);
         }
     }

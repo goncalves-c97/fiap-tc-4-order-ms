@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{32E5F248-C6E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.Email", "Infra.Email\Infra.Email.csproj", "{9B4C6B92-94C9-1075-0157-BF26FF1D7CE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.Data.MongoDb", "Infra.MongoDb\Infra.Data.MongoDb.csproj", "{0F48D249-6541-718A-DA93-C6C4DFB03331}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{9B4C6B92-94C9-1075-0157-BF26FF1D7CE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B4C6B92-94C9-1075-0157-BF26FF1D7CE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B4C6B92-94C9-1075-0157-BF26FF1D7CE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F48D249-6541-718A-DA93-C6C4DFB03331}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F48D249-6541-718A-DA93-C6C4DFB03331}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F48D249-6541-718A-DA93-C6C4DFB03331}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F48D249-6541-718A-DA93-C6C4DFB03331}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -100,19 +100,19 @@ public class SqlServerConnection : IDbConnection, Core.Interfaces.IDbConnection
         return await ExecuteAsync(query, whereParams);
     }
 
-    public async Task<T?> SearchFirstOrDefaultByParametersAsync<T>(string table, string whereClause, object whereParams = null)
+    public async Task<T?> SearchFirstOrDefaultByParametersAsync<T>(string table, string whereClause, object whereParams = null) where T : class, new()
     {
         string query = $"SELECT TOP(1) * FROM {table} WHERE {whereClause}";
         return (await QueryAsync<T>(query, whereParams)).FirstOrDefault();
     }
 
-    public async Task<IEnumerable<T>> SearchByParametersAsync<T>(string table, string whereClause, object whereParams = null)
+    public async Task<IEnumerable<T>> SearchByParametersAsync<T>(string table, string whereClause, object whereParams = null) where T : class, new()
     {
         string query = $"SELECT * FROM {table} WHERE {whereClause}";
         return await QueryAsync<T>(query, whereParams);
     }
 
-    public async Task<IEnumerable<T>> ListAllAsync<T>(string table, string[] columns = null)
+    public async Task<IEnumerable<T>> ListAllAsync<T>(string table, string[] columns = null) where T : class, new()
     {
         var columnList = columns != null && columns.Length > 0 ? string.Join(", ", columns) : "*";
         string query = $"SELECT {columnList} FROM {table}";
