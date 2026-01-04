@@ -439,3 +439,4 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,windows
 /OrderMs/WebApi/Properties/launchSettings.json
 /OrderMs/WebApi/appsettings.json
+OrderMs/WebApi/Properties/launchSettings.json
