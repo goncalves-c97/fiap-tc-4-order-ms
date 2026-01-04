@@ -15,6 +15,7 @@ namespace Core.Gateways
             int registeredId = await _dbConnection.InsertAndReturnIdAsync(_tableName, new Dictionary<string, object>
             {
                 { "id_cliente", pedido.IdCliente },
+                { "email", pedido.Email },
                 { "data_hora_inicio", pedido.DataHoraInicio },
                 { "data_hora_confirmacao", pedido.DataHoraConfirmacao },
                 { "data_hora_inicio_preparo", pedido.DataHoraInicioPreparo },
@@ -56,6 +57,7 @@ namespace Core.Gateways
             await _dbConnection.UpdateAsync(_tableName, new Dictionary<string, object>
             {
                 { "id_cliente", pedido.IdCliente },
+                { "email", pedido.Email },
                 { "data_hora_inicio", pedido.DataHoraInicio },
                 { "data_hora_confirmacao", pedido.DataHoraConfirmacao },
                 { "data_hora_inicio_preparo", pedido.DataHoraInicioPreparo },

@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{32E5F248-C6E
 		k8s\webapi-service.yaml = k8s\webapi-service.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infra.Email", "Infra.Email\Infra.Email.csproj", "{9B4C6B92-94C9-1075-0157-BF26FF1D7CE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{47549124-945E-4B6B-ADA1-A682453B19D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47549124-945E-4B6B-ADA1-A682453B19D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47549124-945E-4B6B-ADA1-A682453B19D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B4C6B92-94C9-1075-0157-BF26FF1D7CE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B4C6B92-94C9-1075-0157-BF26FF1D7CE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B4C6B92-94C9-1075-0157-BF26FF1D7CE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B4C6B92-94C9-1075-0157-BF26FF1D7CE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

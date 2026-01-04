@@ -11,11 +11,12 @@ namespace WebApi.Endpoints
 {
     [ApiController]
     [Route("Pedido")]
-    public class PedidoEndpoint(IDbConnection dbConnection) : ControllerBase
+    public class PedidoEndpoint(IDbConnection dbConnection, IEmailService emailService) : ControllerBase
     {
         private readonly IDbConnection _dbConnection = dbConnection;
+        private readonly IEmailService _emailService = emailService;
 
-        [Authorize(Roles = $"{UsuarioRoles.Administrador}, {UsuarioRoles.Cozinheiro}")]
+        [Authorize]
         [HttpGet, Route("GetAll")]
         public async Task<IActionResult> GetAll([FromQuery] StatusPedidoEnum? status)
         {
@@ -34,6 +35,7 @@ namespace WebApi.Endpoints
         public async Task<IActionResult> IniciaPedido()
         {
             string? idClienteClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            string? emailClienteClaim = User.FindFirst(ClaimTypes.Email)?.Value;
 
             if (idClienteClaim == null)
                 return Unauthorized("ID do cliente não encontrado.");
@@ -41,12 +43,12 @@ namespace WebApi.Endpoints
             if (!int.TryParse(idClienteClaim, out int idCliente))
                 return Unauthorized("ID do cliente inválido!");
 
-            Pedido pedido = await PedidoController.IniciaPedido(_dbConnection, idCliente);
+            Pedido pedido = await PedidoController.IniciaPedido(_dbConnection, idCliente, emailClienteClaim);
 
             return Ok(pedido.IdPedido);
         }
 
-        [Authorize(Roles = $"{UsuarioRoles.ClienteIdentificado}, {UsuarioRoles.ClienteAnonimo}")]
+        [Authorize]
         [HttpPut, Route("UpdateStatusPedido")]
         public async Task<IActionResult> UpdateStatusPedido(int idPedido, StatusPedidoEnum? status)
         {
@@ -61,7 +63,7 @@ namespace WebApi.Endpoints
             if(status == null)
                 return BadRequest("Status do pedido não informado.");
 
-            await PedidoController.UpdateStatusPedido(_dbConnection, idCliente, idPedido, (StatusPedidoEnum)status);
+            await PedidoController.UpdateStatusPedido(_dbConnection, _emailService, idCliente, idPedido, (StatusPedidoEnum)status);
 
             return Ok();
         }

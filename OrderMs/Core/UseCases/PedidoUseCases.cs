@@ -1,6 +1,8 @@
 ﻿using Core.Entities;
 using Core.Enums;
+using Core.Interfaces;
 using Core.Interfaces.Gateways;
+using Newtonsoft.Json.Linq;
 
 namespace Core.UseCases
 {
@@ -23,12 +25,12 @@ namespace Core.UseCases
 
             return await pedidoGateway.GetById(idPedido) ?? throw new KeyNotFoundException($"Pedido with ID {idPedido} not found.");
         }
-        public static async Task<Pedido> CreatePedido(IPedidoGateway pedidoGateway, int idCliente)
+        public static async Task<Pedido> CreatePedido(IPedidoGateway pedidoGateway, int idCliente, string? emailCliente)
         {
             if (pedidoGateway == null)
                 throw new ArgumentNullException(nameof(pedidoGateway), "Pedido gateway cannot be null.");
 
-            Pedido pedido = new(idCliente);
+            Pedido pedido = new(idCliente, emailCliente);
 
             return await pedidoGateway.InsertPedido(pedido);
         }
@@ -43,16 +45,13 @@ namespace Core.UseCases
             await pedidoGateway.UpdatePedido(pedido);
         }
 
-        public static async Task UpdateStatusPedido(IPedidoGateway pedidoGateway, int idCliente, int idPedido, StatusPedidoEnum statusPedido)
+        public static async Task UpdateStatusPedido(IPedidoGateway pedidoGateway, IEmailService emailService, int idCliente, int idPedido, StatusPedidoEnum statusPedido)
         {
             if (pedidoGateway == null)
                 throw new ArgumentNullException(nameof(pedidoGateway), "Pedido gateway cannot be null.");
 
             Pedido pedido = await pedidoGateway.GetById(idPedido) ?? throw new KeyNotFoundException($"Pedido with ID {idPedido} not found.");
 
-            if(pedido.IdCliente != idCliente)
-                throw new UnauthorizedAccessException("O cliente não tem permissão para atualizar o status deste pedido.");
-                
             // Atribui o novo status ao pedido
             pedido.IdStatusPedido = (int)statusPedido;
 
@@ -70,6 +69,7 @@ namespace Core.UseCases
                     break;
                 case StatusPedidoEnum.Pronto:
                     pedido.DataHoraTerminoPreparo = now;
+                    await EmailUseCases.SendNotificacaoPedidoPronto(emailService, pedido);
                     break;
                 case StatusPedidoEnum.Finalizado:
                     pedido.DataHoraRetiradaCliente = now;

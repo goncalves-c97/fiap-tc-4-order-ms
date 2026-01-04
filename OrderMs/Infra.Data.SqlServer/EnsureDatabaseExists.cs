@@ -21,7 +21,22 @@ namespace Infra.Data.SqlServer
                 var checkDbCmd = connection.CreateCommand();
                 checkDbCmd.CommandText = $@"
                     SELECT COUNT(*) FROM sys.databases WHERE name = N'{dbName}'";
-                dbExists = (int)checkDbCmd.ExecuteScalar() > 0;
+
+                byte tries = 0;
+
+                do
+                {
+                    try
+                    {
+                        dbExists = (int)checkDbCmd.ExecuteScalar() > 0;
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        tries++;
+                        Console.WriteLine($"Attempt {tries} - Error checking database existence: {ex.Message}");
+                    }
+                } while (tries < 3);
 
                 if (!dbExists)
                 {

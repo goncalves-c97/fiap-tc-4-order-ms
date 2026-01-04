@@ -1,7 +1,6 @@
 ﻿using Core.Dtos;
 using Core.Interfaces;
 using Infra.Email.Exceptions;
-using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 

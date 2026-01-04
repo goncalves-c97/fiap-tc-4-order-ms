@@ -4,11 +4,15 @@ using Core.Settings;
 using Dapper;
 using Infra.Data.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text;
 using System.Text.Json.Serialization;
+using Infra.Email;
+using Core.Dtos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -129,8 +133,16 @@ builder.Services.AddScoped<IDbConnection>(provider =>
 
 builder.Configuration.AddEnvironmentVariables();
 
+builder.Services.Configure<EmailSettingsDto>(builder.Configuration.GetSection("EMAIL_SETTINGS"));
+
 builder.Services.Configure<AppSettings>(
     builder.Configuration.GetSection("APP_SETTINGS"));
+
+builder.Services.AddScoped<IEmailService>(provider => {
+    var settings = provider.GetRequiredService<IOptions<EmailSettingsDto>>().Value;
+    Console.WriteLine(JsonConvert.SerializeObject(settings, Formatting.Indented));
+    return new EmailService(settings);
+});
 
 var app = builder.Build();
 

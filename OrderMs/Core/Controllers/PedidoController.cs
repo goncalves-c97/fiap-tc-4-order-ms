@@ -22,10 +22,10 @@ namespace Core.Controllers
             return pedido;
         }
 
-        public static async Task<Pedido> IniciaPedido(IDbConnection dbConnection, int idCliente)
+        public static async Task<Pedido> IniciaPedido(IDbConnection dbConnection, int idCliente, string? emailCliente = null)
         {
             PedidoGateway gateway = new(dbConnection);
-            Pedido pedido = await PedidoUseCases.CreatePedido(gateway, idCliente);
+            Pedido pedido = await PedidoUseCases.CreatePedido(gateway, idCliente, emailCliente);
             return pedido;
         }
 
@@ -35,10 +35,10 @@ namespace Core.Controllers
             await PedidoUseCases.UpdateIdPagamento(gateway, idCliente, idPedido, idPagamento);
         }
 
-        public static async Task UpdateStatusPedido(IDbConnection dbConnection, int idCliente, int idProduto, StatusPedidoEnum statusPedido)
+        public static async Task UpdateStatusPedido(IDbConnection dbConnection, IEmailService emailService, int idCliente, int idProduto, StatusPedidoEnum statusPedido)
         {
             PedidoGateway gateway = new(dbConnection);
-            await PedidoUseCases.UpdateStatusPedido(gateway, idCliente, idProduto, statusPedido);
+            await PedidoUseCases.UpdateStatusPedido(gateway, emailService, idCliente, idProduto, statusPedido);
         }
     }
 }

@@ -6,6 +6,8 @@ public partial class Pedido
 
     public int IdCliente { get; set; }
 
+    public string? Email { get; set; }
+
     public DateTime DataHoraInicio { get; set; }
 
     public DateTime? DataHoraConfirmacao { get; set; }
@@ -24,9 +26,10 @@ public partial class Pedido
 
     public Pedido() { }
 
-    public Pedido(int idCliente)
+    public Pedido(int idCliente, string? emailCliente = null)
     {
         IdCliente = idCliente;
+        Email = emailCliente;
         DataHoraInicio = DateTime.Now;
         DataHoraConfirmacao = null;
         DataHoraInicioPreparo = null;
