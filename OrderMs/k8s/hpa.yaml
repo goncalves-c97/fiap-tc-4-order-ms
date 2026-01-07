@@ -1,14 +1,15 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: webapi-hpa
+  name: order-ms-webapi-hpa
+  namespace: order-ms
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: webapi-deployment
+    name: order-ms-webapi-deployment
   minReplicas: 1
-  maxReplicas: 3
+  maxReplicas: 2
   metrics:
   - type: Resource
     resource:

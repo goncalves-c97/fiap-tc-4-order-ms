@@ -1,26 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webapi-deployment
+  name: order-ms-webapi-deployment
+  namespace: order-ms
   labels:
-    app: webapi
+    app: order-ms-webapi
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: webapi
+      app: order-ms-webapi
   template:
     metadata:
       labels:
-        app: webapi
+        app: order-ms-webapi
     spec:
-      initContainers:
-      - name: wait-for-sqlserver
-        image: busybox:1.28
-        command: ['sh', '-c', 'until nc -z sqlserver 1433; do echo waiting for sqlserver; sleep 2; done;']
       containers:
-      - name: webapi
-        image: goncalvesc97/fastfood-clean-arch-challenge:latest
+      - name: order-ms-webapi
+        image: goncalvesc97/fiap-tc-4-order-ms:1.0
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
@@ -38,79 +35,50 @@ spec:
           value: "Development"
 
         # Configuração do ambiente de banco de dados 
-        - name: ConnectionStrings__DefaultConnection
+
+        - name: DB_CONNECTION_STRING
           valueFrom:
             secretKeyRef:
-              name: fastfood-secret
-              key: DEFAULT_CONNECTION_STRING
-        - name: ConnectionStrings__MasterConnection
+              name: order-ms-secret
+              key: DB_CONNECTION_STRING
+
+        - name: DB_NAME
           valueFrom:
             secretKeyRef:
-              name: fastfood-secret
-              key: MASTER_CONNECTION_STRING
+              name: order-ms-secret
+              key: DB_NAME
 
         # Configuração da chave de autenticação da API
-        - name: ApiAuthentication__Token
+
+        - name: API_AUTHENTICATION_KEY
           valueFrom:
             secretKeyRef:
-              name: fastfood-secret
+              name: order-ms-secret
               key: API_AUTH_TOKEN
 
         # Configuração do serviço de email
-        - name: EmailSettings__Mail
+        - name: EMAIL_SETTINGS__MAIL
           valueFrom:
             configMapKeyRef:
-              name: fastfood-config
+              name: order-ms-config
               key: MAIL
-        - name: EmailSettings__DisplayName
+        - name: EMAIL_SETTINGS__DISPLAY_NAME
           valueFrom:
             configMapKeyRef:
-              name: fastfood-config
+              name: order-ms-config
               key: DISPLAY_NAME
-        - name: EmailSettings__Host
+        - name: EMAIL_SETTINGS__HOST
           valueFrom:
             configMapKeyRef:
-              name: fastfood-config
+              name: order-ms-config
               key: HOST
-        - name: EmailSettings__Port
+        - name: EMAIL_SETTINGS__PORT
           valueFrom:
             configMapKeyRef:
-              name: fastfood-config
+              name: order-ms-config
               key: PORT
-        - name: EmailSettings__Password
+        - name: EMAIL_SETTINGS__PASSWORD
           valueFrom:
             secretKeyRef:
-              name: fastfood-secret
+              name: order-ms-secret
               key: EMAIL_PASSWORD
-
-        # Configuração do serviço de pagamento Mercado Pago
-        - name: PaymentSettings__Token
-          valueFrom:
-            secretKeyRef:
-              name: fastfood-secret
-              key: MERCADO_PAGO_ACCESS_TOKEN
-        - name: PaymentSettings__SponsorId
-          valueFrom:
-            configMapKeyRef:
-              name: fastfood-config
-              key: MERCADO_PAGO_SPONSOR_ID
-        - name: PaymentSettings__BaseUrl
-          valueFrom:
-            configMapKeyRef:
-              name: fastfood-config
-              key: MERCADO_PAGO_BASE_URL
-        - name: PaymentSettings__PaymentController
-          valueFrom:
-            configMapKeyRef:
-              name: fastfood-config
-              key: MERCADO_PAGO_PAGAMENTO_QRCODE_CONTROLLER
-        - name: PaymentSettings__UserId
-          valueFrom:
-            configMapKeyRef:
-              name: fastfood-config
-              key: MERCADO_PAGO_USER_ID
-        - name: PaymentSettings__ExternalPosId
-          valueFrom:
-            configMapKeyRef:
-              name: fastfood-config
-              key: MERCADO_PAGO_EXTERNAL_POS_ID

@@ -17,10 +17,15 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "API_AUTHENTICATION_KEY": "Yf29qN58VfWbT1YtZz7jRkE4sLt9xP2eUqK3LmXvHsDcMgAjBwNvZxQrFtGvKyLz",
-        "DB_CONNECTION_STRING": "Server=localhost\\SQLEXPRESS;user=local_sa;password=1234;Trusted_Connection=True;TrustServerCertificate=True",
+        "DB_CONNECTION_STRING": "mongodb+srv://carloshenrique97_db_user:AH5tjo19c8UMGP0w@fiaptechchallenge4.rqyfkve.mongodb.net/?appName=FiapTechChallenge4",
         "DB_NAME": "OrderDb",
         "APP_SETTINGS__APP_URL": "https://localhost:8082",
-        "APP_SETTINGS__ORDER_MS_URL": "https://localhost:7160"
+        "APP_SETTINGS__ORDER_MS_URL": "https://localhost:7160",
+        "EMAIL_SETTINGS__MAIL": "noreply.soat.fiap@gmail.com",
+        "EMAIL_SETTINGS__DISPLAY_NAME": "FastFoodChallenge",
+        "EMAIL_SETTINGS__HOST": "smtp.gmail.com",
+        "EMAIL_SETTINGS__PORT": "587",
+        "EMAIL_SETTINGS__PASSWORD": "sxrs rsip ydzk tuaj"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:8082"
