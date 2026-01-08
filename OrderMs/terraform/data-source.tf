@@ -1,7 +1,3 @@
-data "aws_db_subnet_group" "rds_subnet_group" {
-  name = "rds-sqlserver-subnet-group"
-}
-
 # Usamos o data source 'aws_subnets' para pegar uma lista de IDs.
 data "aws_subnets" "private_subnets" {
   filter {
