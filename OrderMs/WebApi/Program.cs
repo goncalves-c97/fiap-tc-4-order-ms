@@ -140,7 +140,8 @@ builder.Services.Configure<EmailSettingsDto>(builder.Configuration.GetSection("E
 builder.Services.Configure<AppSettings>(
     builder.Configuration.GetSection("APP_SETTINGS"));
 
-builder.Services.AddScoped<IEmailService>(provider => {
+builder.Services.AddScoped<IEmailService>(provider =>
+{
     var settings = provider.GetRequiredService<IOptions<EmailSettingsDto>>().Value;
     Console.WriteLine(JsonConvert.SerializeObject(settings, Formatting.Indented));
     return new EmailService(settings);

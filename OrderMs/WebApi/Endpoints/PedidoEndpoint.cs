@@ -60,7 +60,7 @@ namespace WebApi.Endpoints
             if (!int.TryParse(idClienteClaim, out int idCliente))
                 return Unauthorized("ID do cliente inválido!");
 
-            if(status == null)
+            if (status == null)
                 return BadRequest("Status do pedido não informado.");
 
             await PedidoController.UpdateStatusPedido(_dbConnection, _emailService, idCliente, idPedido, (StatusPedidoEnum)status);

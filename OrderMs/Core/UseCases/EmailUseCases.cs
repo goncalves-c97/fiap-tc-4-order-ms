@@ -53,7 +53,7 @@ namespace Core.UseCases
         {
 
             // Em situações de cliente anônimo, não há notificação por email
-            if(string.IsNullOrEmpty(pedido.Email))
+            if (string.IsNullOrEmpty(pedido.Email))
                 return;
 
             string emailMessage = $@"
@@ -120,7 +120,7 @@ namespace Core.UseCases
             {
                 await SendEmail(emailService, emailRequestDto);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Falha ao enviar e-mail");
             }

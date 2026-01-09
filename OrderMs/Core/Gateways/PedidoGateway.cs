@@ -46,7 +46,7 @@ namespace Core.Gateways
                 new { Id = idPedido }
             );
 
-            if(pedido == null)
+            if (pedido == null)
                 return null;
 
             return pedido;

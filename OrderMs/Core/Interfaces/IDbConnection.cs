@@ -7,7 +7,7 @@ namespace Core.Interfaces
         Task<int> InsertAndReturnIdAsync(string tableName, Dictionary<string, object> values, string idColumn = "id");
         Task<int> UpdateAsync(string table, Dictionary<string, object> values, string whereClause, object whereParams = null);
         Task<int> DeleteAsync(string table, string whereClause, object whereParams = null);
-        Task<T?> SearchFirstOrDefaultByParametersAsync<T>(string table, string whereClause, object whereParams = null) where T : class, new ();
+        Task<T?> SearchFirstOrDefaultByParametersAsync<T>(string table, string whereClause, object whereParams = null) where T : class, new();
         Task<IEnumerable<T>> SearchByParametersAsync<T>(string table, string whereClause, object whereParams = null) where T : class, new();
         Task<IEnumerable<T>> ListAllAsync<T>(string table, string[] columns = null) where T : class, new();
         Task<int> ExecuteRawSql(string rawSql);
